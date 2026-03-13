@@ -67,13 +67,13 @@ export class SettingsPage {
   }
 
   async assertPassword(password) {
-    await this.step(`Assert the Username field has correct text'`, async () => {
+    await this.step(`Assert the Password field has correct text'`, async () => {
       await expect(this.passwordField).toHaveValue(password);
     });
   }
 
   async assertEmail(email) {
-    await this.step(`Assert the Username field has correct text`, async () => {
+    await this.step(`Assert the Email field has correct text`, async () => {
       await expect(this.emailField).toHaveValue(email);
     });
   }

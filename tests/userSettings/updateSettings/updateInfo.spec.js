@@ -1,19 +1,8 @@
 import { test } from '../../_fixtures/fixtures';
-import { generateNewArticleData } from '../../../src/common/testData/generateNewArticleData';
 import { signUpUser } from '../../../src/ui/actions/auth/signUpUser';
 import { faker } from '@faker-js/faker';
 
-let article;
-
-const user = {
-  username: faker.internet.username().toLowerCase(),
-  password: faker.internet.password(),
-  email: faker.internet.email().toLowerCase()
-}
-
 test.beforeEach(async ({ page, user, logger }) => {
-  article = generateNewArticleData(logger);
-
   await signUpUser(page, user);
 });
 
@@ -21,24 +10,28 @@ test('Update username from settings', async ({
   homePage,
   settingsPage,
 }) => {
+  const username = faker.internet.username().toLowerCase();
+
   await homePage.clickSettingsLink();
 
-  await settingsPage.fillUsername(user.username);
+  await settingsPage.fillUsername(username);
   await settingsPage.clickUpdateSettingsButton();
   await homePage.clickSettingsLink();
-  await settingsPage.assertUsername(user.username);
+  await settingsPage.assertUsername(username);
 });
 
 test('Update email from settings', async ({
   homePage,
   settingsPage,
 }) => {
+  const email = faker.internet.email().toLowerCase();
+
   await homePage.clickSettingsLink();
 
-  await settingsPage.fillEmail(user.email);
+  await settingsPage.fillEmail(email);
   await settingsPage.clickUpdateSettingsButton();
   await homePage.clickSettingsLink();
-  await settingsPage.assertEmail(user.email);
+  await settingsPage.assertEmail(email);
 });
 
 test('Update password from settings', async ({
@@ -46,18 +39,21 @@ test('Update password from settings', async ({
   signInPage,
   settingsPage,
 }) => {
+  const email = faker.internet.email().toLowerCase();
+  const password = faker.internet.password();
+
   await homePage.clickSettingsLink();
 
-  await settingsPage.fillEmail(user.email);
-  await settingsPage.fillPassword(user.password);
+  await settingsPage.fillEmail(email);
+  await settingsPage.fillPassword(password);
   await settingsPage.clickUpdateSettingsButton();
 
   await homePage.clickSettingsLink();
   await settingsPage.clickLogoutButton();
 
   await signInPage.open();
-  await signInPage.fillEmailField(user.email);
-  await signInPage.fillPasswordField(user.password);
+  await signInPage.fillEmailField(email);
+  await signInPage.fillPasswordField(password);
   await signInPage.clickSignInButton();
 
   await homePage.assertYourFeedTabIsVisible();
