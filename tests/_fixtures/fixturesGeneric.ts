@@ -3,6 +3,7 @@ import { Logger } from '../../src/common/logger/Logger';
 import { generateNewUserData } from '../../src/common/testData/generateNewUserData';
 import * as allure from 'allure-js-commons';
 import { parseTestTreeHierarchy } from '../../src/common/helpers/allureHelpers';
+import fs from 'node:fs';
 
 export const test = base.extend<
   {
@@ -13,6 +14,7 @@ export const test = base.extend<
     users;
     infoTestLog;
     addAllureTestHierarchy;
+    deleteAllureResultsFolder;
   },
   {
     logger;
@@ -84,4 +86,11 @@ export const test = base.extend<
     },
     { scope: 'test', auto: true },
   ],
+  deleteAllureResultsFolder: [
+    async ({}, use)  => {
+      await fs.promises.rm('./allure-results', { recursive: true, force: true });
+      await use();
+    }, 
+    { scope: 'worker', auto: true },
+  ]
 });
