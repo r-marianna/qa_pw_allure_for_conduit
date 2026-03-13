@@ -38,13 +38,12 @@ test('Update password from settings', async ({
   homePage,
   signInPage,
   settingsPage,
+  user
 }) => {
-  const email = faker.internet.email().toLowerCase();
   const password = faker.internet.password();
 
   await homePage.clickSettingsLink();
 
-  await settingsPage.fillEmail(email);
   await settingsPage.fillPassword(password);
   await settingsPage.clickUpdateSettingsButton();
 
@@ -52,7 +51,7 @@ test('Update password from settings', async ({
   await settingsPage.clickLogoutButton();
 
   await signInPage.open();
-  await signInPage.fillEmailField(email);
+  await signInPage.fillEmailField(user.email);
   await signInPage.fillPasswordField(password);
   await signInPage.clickSignInButton();
 
